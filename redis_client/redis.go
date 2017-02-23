@@ -30,12 +30,15 @@ func Set(key, value string, time int) error {
 	_, err := (*redis_connection).Do("set", key, value)
 	if err == nil {
 		if time != 0 {
-			// 过期时间
+			// 设置缓存过期时间
 			_, err := (*redis_connection).Do("EXPIRE", key, time)
 			if err != nil {
+				fmt.Println("time error")
 				return err
 			}
 		}
+	} else {
+		fmt.Println("set error: ", err)
 	}
 	return err
 }

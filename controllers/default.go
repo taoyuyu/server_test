@@ -28,24 +28,24 @@ func (c *UserController) Get() {
 	//检查缓存
 	result, err := redis_client.Get(userName)
 	if err != nil {
+		fmt.Println("get error: ", err)
+		fmt.Println("数据查询\n")
 		//查询数据库
 		user, _ := models.FindUserBasicByUserName(userName)
 		questions, _ := models.FindQuestionnaireByUserBasicID(user.UserBasicID)
-		fmt.Println(questions)
 
 		//打包json
 		bs, err1 := json.Marshal(questions)
 		if err1 != nil {
-			fmt.Println(err1)
+			fmt.Println("error1: ", err1)
 		}
 		result = string(bs)
 		//写入缓存
-		err2 := redis_client.Set(userName, result, 5)
+		err2 := redis_client.Set(userName, result, 30)
 		if err2 != nil {
-			fmt.Println(err2)
+			fmt.Println("error2: ", err2)
 		}
 	}
-	c.Data["response"] = result
-	c.ServeJSON()
+	c.Ctx.WriteString(result)
 	return
 }
