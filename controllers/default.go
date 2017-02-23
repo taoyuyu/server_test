@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"server_test/models"
 	"server_test/redis_client"
@@ -25,19 +26,26 @@ func (c *MainController) Get() {
 func (c *UserController) Get() {
 	userName := c.GetString("username")
 	//检查缓存
-	result, _ := redis_client.Get(userName)
-	if result != `` {
-		c.Data["response"] = result
-		c.ServeJSON()
-		return
-	}
-	//查询数据库
-	user, _ := models.FindUserBasicByUserName(userName)
-	questions, _ := models.FindQuestionnaireByUserBasicID(user.UserBasicID)
-	fmt.Println(questions)
-	//写入缓存
+	result, err := redis_client.Get(userName)
+	if err != nil {
+		//查询数据库
+		user, _ := models.FindUserBasicByUserName(userName)
+		questions, _ := models.FindQuestionnaireByUserBasicID(user.UserBasicID)
+		fmt.Println(questions)
 
-	c.Data["response"] = questions
+		//打包json
+		bs, err1 := json.Marshal(questions)
+		if err1 != nil {
+			fmt.Println(err1)
+		}
+		result = string(bs)
+		//写入缓存
+		err2 := redis_client.Set(userName, result, 5)
+		if err2 != nil {
+			fmt.Println(err2)
+		}
+	}
+	c.Data["response"] = result
 	c.ServeJSON()
 	return
 }
