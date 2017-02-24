@@ -25,6 +25,12 @@ func (c *MainController) Get() {
 
 func (c *UserController) Get() {
 	userName := c.GetString("username")
+	data := getData(userName)
+	c.Ctx.WriteString(data)
+	return
+}
+
+func getData(userName string) string {
 	//检查缓存
 	result, err := redis_client.Get(userName)
 	if err != nil {
@@ -41,11 +47,10 @@ func (c *UserController) Get() {
 		}
 		result = string(bs)
 		//写入缓存
-		err2 := redis_client.Set(userName, result, 30)
+		err2 := redis_client.Set(userName, result, 3)
 		if err2 != nil {
 			fmt.Println("error2: ", err2)
 		}
 	}
-	c.Ctx.WriteString(result)
-	return
+	return result
 }
