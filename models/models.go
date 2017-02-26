@@ -1,7 +1,7 @@
 package models
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -19,6 +19,11 @@ func init() {
 	//构造conn连接
 	conn := dbuser + ":" + dbpassword + "@tcp(" + dbhost + ":" + dbport + ")/" + db + "?charset=utf8"
 	//注册数据库连接
-	orm.RegisterDataBase("default", "mysql", conn)
-	fmt.Printf("mysql connect succeed!\n")
+	err := orm.RegisterDataBase("default", "mysql", conn)
+	if err != nil {
+		log.Println("INFO: Mysql connect error :", err)
+	} else {
+		log.Println("INFO: Mysql connect succeed!\n")
+	}
+
 }

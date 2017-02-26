@@ -1,7 +1,7 @@
 package redis_client
 
 import (
-	"fmt"
+	"log"
 	"sync"
 
 	"github.com/astaxie/beego"
@@ -22,9 +22,9 @@ func init() {
 	rs, err := redis.Dial("tcp", conn)
 
 	if err != nil {
-		fmt.Println("redis connect error!")
+		log.Println("INFO: Redis connect error: ", err)
 	} else {
-		fmt.Println("redis connect succceed!")
+		log.Println("INFO: Redis connect succeed!")
 	}
 	rs.Do("SELECT", redis_index)
 	redis_connection = &rs

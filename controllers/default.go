@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"server_test/models"
 	"server_test/redis_client"
 
@@ -34,8 +35,8 @@ func getData(userName string) string {
 	//检查缓存
 	result, err := redis_client.Get(userName)
 	if err != nil {
-		fmt.Println("get error: ", err)
-		fmt.Println("数据查询\n")
+		log.Println(err)
+		fmt.Println("查询数据库\n")
 		//查询数据库
 		user, _ := models.FindUserBasicByUserName(userName)
 		questions, _ := models.FindQuestionnaireByUserBasicID(user.UserBasicID)
@@ -43,13 +44,13 @@ func getData(userName string) string {
 		//打包json
 		bs, err1 := json.Marshal(questions)
 		if err1 != nil {
-			fmt.Println("error1: ", err1)
+			log.Println(err1)
 		}
 		result = string(bs)
 		//写入缓存
 		err2 := redis_client.Set(userName, result, 3)
 		if err2 != nil {
-			fmt.Println("error2: ", err2)
+			log.Println(err2)
 		}
 	}
 	return result
