@@ -26,6 +26,7 @@ func (c *MainController) Get() {
 func (c *UserController) Get() {
 	userName := c.GetString("username")
 	data := getData(userName)
+	//data := searchInDB(userName)
 	c.Ctx.WriteString(data)
 	return
 }
@@ -53,4 +54,12 @@ func getData(userName string) string {
 		}
 	}
 	return result
+}
+
+func searchInDB(userName string) string {
+	user, _ := models.FindUserBasicByUserName(userName)
+	questions, _ := models.FindQuestionnaireByUserBasicID(user.UserBasicID)
+
+	bs, _ := json.Marshal(questions)
+	return string(bs)
 }
