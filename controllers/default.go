@@ -36,7 +36,7 @@ func getData(userName string) string {
 	result, err := redis_client.Get(userName)
 	if err != nil {
 		log.Println(err)
-		log.Println("数据查询")
+
 		//查询数据库
 		user, _ := models.FindUserBasicByUserName(userName)
 		questions, _ := models.FindQuestionnaireByUserBasicID(user.UserBasicID)
