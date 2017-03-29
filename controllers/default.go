@@ -61,5 +61,6 @@ func searchInDB(userName string) string {
 	questions, _ := models.FindQuestionnaireByUserBasicID(user.UserBasicID)
 
 	bs, _ := json.Marshal(questions)
+
 	return string(bs)
 }
