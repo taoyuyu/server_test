@@ -40,15 +40,20 @@ func getData(userName string) string {
 		//查询数据库
 		user, _ := models.FindUserBasicByUserName(userName)
 		questions, _ := models.FindQuestionnaireByUserBasicID(user.UserBasicID)
+		size := len(questions)
+		qids := make([]int, size)
+		for key, value := range questions {
+			qids[key] = value.QnaireID
+		}
 
 		//打包json
-		bs, err1 := json.Marshal(questions)
+		bs, err1 := json.Marshal(qids)
 		if err1 != nil {
 			log.Println(err1)
 		}
 		result = string(bs)
 		//写入缓存
-		err2 := redis_client.Set(userName, result, 3)
+		err2 := redis_client.Set(userName, result, 10)
 		if err2 != nil {
 			log.Println(err2)
 		}
