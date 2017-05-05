@@ -53,7 +53,7 @@ func getData(userName string) string {
 		}
 		result = string(bs)
 		//写入缓存
-		err2 := redis_client.Set(userName, result, 10)
+		err2 := redis_client.Set(userName, result, 5)
 		if err2 != nil {
 			log.Println(err2)
 		}
