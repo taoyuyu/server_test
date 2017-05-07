@@ -5,7 +5,7 @@ import (
 	"log"
 	"server_test/models"
 	"server_test/redis_client"
-
+	"fmt"
 	"github.com/astaxie/beego"
 )
 
@@ -33,6 +33,7 @@ func (c *UserController) Get() {
 
 func getData(userName string) string {
 	//检查缓存
+	fmt.Println("Http Get")
 	result, err := redis_client.Get(userName)
 	if err != nil {
 		log.Println(err)
@@ -56,6 +57,10 @@ func getData(userName string) string {
 		err2 := redis_client.Set(userName, result, 5)
 		if err2 != nil {
 			log.Println(err2)
+		}
+	} else {
+		for i:=0; i<80; i++ {
+			fmt.Printf("a")
 		}
 	}
 	return result
