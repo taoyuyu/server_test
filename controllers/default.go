@@ -2,12 +2,17 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
+	"math/rand"
 	"server_test/models"
 	"server_test/redis_client"
-	"fmt"
+	"time"
+
 	"github.com/astaxie/beego"
 )
+
+var r = rand.New(rand.NewSource(time.Now().Unix()))
 
 type MainController struct {
 	beego.Controller
@@ -59,7 +64,8 @@ func getData(userName string) string {
 			log.Println(err2)
 		}
 	} else {
-		for i:=0; i<40; i++ {
+		n := r.Intn(100)
+		for i := 0; i < n; i++ {
 			fmt.Printf("a")
 		}
 	}
