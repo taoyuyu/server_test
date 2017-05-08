@@ -59,7 +59,7 @@ func getData(userName string) string {
 			log.Println(err2)
 		}
 	} else {
-		for i:=0; i<80; i++ {
+		for i:=0; i<40; i++ {
 			fmt.Printf("a")
 		}
 	}
