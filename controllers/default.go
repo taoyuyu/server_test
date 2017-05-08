@@ -63,11 +63,6 @@ func getData(userName string) string {
 		if err2 != nil {
 			log.Println(err2)
 		}
-	} else {
-		n := r.Intn(100)
-		for i := 0; i < n; i++ {
-			fmt.Printf("a")
-		}
 	}
 	return result
 }
