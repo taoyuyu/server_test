@@ -30,6 +30,10 @@ func (c *MainController) Get() {
 
 func (c *UserController) Get() {
 	userName := c.GetString("username")
+	if userName == `` {
+		c.Ctx.WriteString("参数错误")
+		return
+	}
 	data := getData(userName)
 	//data := searchInDB(userName)
 	c.Ctx.WriteString(data)
