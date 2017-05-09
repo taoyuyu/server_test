@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"math/rand"
 	"server_test/models"
@@ -38,7 +37,6 @@ func (c *UserController) Get() {
 
 func getData(userName string) string {
 	//检查缓存
-	fmt.Println("Http Get")
 	result, err := redis_client.Get(userName)
 	if err != nil {
 		log.Println(err)
