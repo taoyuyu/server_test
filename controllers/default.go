@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"math/rand"
 	"server_test/models"
@@ -42,7 +43,11 @@ func getData(userName string) string {
 		log.Println(err)
 
 		//查询数据库
-		user, _ := models.FindUserBasicByUserName(userName)
+		user, err := models.FindUserBasicByUserName(userName)
+		if err != nil {
+			return `username not existed`
+		}
+		fmt.Println("getinfo: ", err)
 		questions, _ := models.FindQuestionnaireByUserBasicID(user.UserBasicID)
 		size := len(questions)
 		qids := make([]int, size)
