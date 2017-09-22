@@ -22,6 +22,14 @@ type UserController struct {
 	beego.Controller
 }
 
+type SampController struct {
+	beego.Controller
+}
+
+func (c *SampController) Get() {
+	c.TplName = "sample.tpl"
+}
+
 func (c *MainController) Get() {
 	c.Data["Website"] = "beego"
 	c.Data["Email"] = "astaxie@gmail.com"
